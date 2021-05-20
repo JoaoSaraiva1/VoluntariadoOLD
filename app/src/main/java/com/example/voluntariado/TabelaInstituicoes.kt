@@ -5,40 +5,46 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.provider.BaseColumns
 
+
 class TabelaInstituicoes(db: SQLiteDatabase) {
     private val db: SQLiteDatabase = db
 
     fun cria() {
-        db.execSQL("CREATE TABLE $NOME_TABELA (${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, $CAMPO_TITULO TEXT NOT NULL, $CAMPO_AUTOR TEXT NOT NULL, $CAMPO_ID_CATEGORIA INTEGER NOT NULL, FOREIGN KEY($CAMPO_ID_CATEGORIA) REFERENCES ${TabelaCategorias.NOME_TABELA})")
+        db.execSQL("CREATE TABLE $NOME_TABELA (${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, $CAMPO_NOME TEXT NOT NULL, $CAMPO_TELEFONE NUMBER NOT NULL, $CAMPO_MORADA TEXT NOT NULL, $CAMPO_TAREFAS)")
     }
 
     fun insert(values: ContentValues): Long {
-        return db.insert(TabelaCategorias.NOME_TABELA, null, values)
+        return db.insert(NOME_TABELA, null, values)
     }
 
     fun update(values: ContentValues, whereClause: String, whereArgs: Array<String>): Int {
-        return db.update(TabelaCategorias.NOME_TABELA, values, whereClause, whereArgs)
+        return db.update(NOME_TABELA, values, whereClause, whereArgs)
     }
 
     fun delete(whereClause: String, whereArgs: Array<String>): Int {
-        return db.delete(TabelaCategorias.NOME_TABELA, whereClause, whereArgs)
+        return db.delete(NOME_TABELA, whereClause, whereArgs)
     }
 
     fun query(
         columns: Array<String>,
-        selection: String,
-        selectionArgs: Array<String>,
-        groupBy: String,
-        having: String,
-        orderBy: String
+        selection: String?,
+        selectionArgs: Array<String>?,
+        groupBy: String?,
+        having: String?,
+        orderBy: String?
     ): Cursor? {
-        return db.query(TabelaCategorias.NOME_TABELA, columns, selection, selectionArgs, groupBy, having, orderBy)
+        return db.query(NOME_TABELA, columns, selection, selectionArgs, groupBy, having, orderBy)
+
     }
 
     companion object {
-        const val NOME_TABELA = "livros"
-        const val CAMPO_TITULO = "titulo"
-        const val CAMPO_AUTOR = "autor"
-        const val CAMPO_ID_CATEGORIA = "id_categoria"
+        const val NOME_TABELA = "voluntarios"
+        const val CAMPO_NOME = "nome"
+        const val CAMPO_TELEFONE = "telefone"
+        const val CAMPO_MORADA = "morada"
+        const val CAMPO_TAREFAS= "tarefas"
+
+        val TODAS_COLUNAS = arrayOf(BaseColumns._ID, CAMPO_NOME,CAMPO_TELEFONE,CAMPO_MORADA,CAMPO_TAREFAS)
     }
 }
+

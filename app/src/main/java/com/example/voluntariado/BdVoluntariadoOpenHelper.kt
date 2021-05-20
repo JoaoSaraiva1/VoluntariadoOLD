@@ -3,6 +3,7 @@ package pt.ipg.livros
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.voluntariado.TabelaInstituicoes
 import com.example.voluntariado.TabelaVoluntarios
 
 class BdVoluntariadoOpenHelper(context: Context?)
