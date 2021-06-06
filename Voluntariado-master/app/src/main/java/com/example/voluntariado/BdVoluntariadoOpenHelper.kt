@@ -3,8 +3,6 @@ package com.example.voluntariado
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.voluntariado.TabelaInstituicoes
-import com.example.voluntariado.TabelaVoluntarios
 
 class BdVoluntariadoOpenHelper(context: Context?)
     : SQLiteOpenHelper(context, NOME_BASE_DADOS, null, VERSAO_BASE_DADOS) {
@@ -18,6 +16,7 @@ class BdVoluntariadoOpenHelper(context: Context?)
         if (db != null) {
             TabelaVoluntarios(db).cria()
             TabelaInstituicoes(db).cria()
+            TabelaTarefas(db).cria()
         }
     }
 
