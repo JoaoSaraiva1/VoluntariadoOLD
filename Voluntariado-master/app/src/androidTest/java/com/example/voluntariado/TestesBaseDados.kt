@@ -58,7 +58,8 @@ class TestesBaseDados {
         val db = getBdVoluntariadoOpenHelper().writableDatabase
         val tabelaVoluntarios = TabelaVoluntarios(db)
 
-        val voluntario = Voluntario(nome = "Joao", )
+        val voluntario = Voluntario(nome = "Manuel", data_nascimento = "10/02/1999", genero = "Masculino")
+
         voluntario.id = insereVoluntario(tabelaVoluntarios, voluntario)
 
         assertEquals(voluntario, getVoluntarioBaseDados(tabelaVoluntarios, voluntario.id))
@@ -71,7 +72,7 @@ class TestesBaseDados {
         val db = getBdVoluntariadoOpenHelper().writableDatabase
         val tabelaVoluntarios = TabelaVoluntarios(db)
 
-        val voluntario = Voluntario(nome = "Joao")
+        val voluntario = Voluntario(nome = "Manuel", data_nascimento = "10/02/1999", genero = "Masculino")
         voluntario.id = insereVoluntario(tabelaVoluntarios, voluntario)
 
         voluntario.nome = "Manel"
@@ -94,7 +95,7 @@ class TestesBaseDados {
         val db = getBdVoluntariadoOpenHelper().writableDatabase
         val tabelaVoluntarios = TabelaVoluntarios(db)
 
-        val voluntario = Voluntario(nome = "teste")
+        val voluntario = Voluntario(nome = "Manuel", data_nascimento = "10/02/1999", genero = "Masculino")
         voluntario.id = insereVoluntario(tabelaVoluntarios, voluntario)
 
         val registosEliminados = tabelaVoluntarios.delete(
@@ -112,7 +113,7 @@ class TestesBaseDados {
         val db = getBdVoluntariadoOpenHelper().writableDatabase
         val tabelaVoluntarios = TabelaVoluntarios(db)
 
-        val voluntario = Voluntario(nome = "Aventura")
+        val voluntario = Voluntario(nome = "Manuel", data_nascimento = "10/02/1999", genero = "Masculino")
         voluntario.id = insereVoluntario(tabelaVoluntarios, voluntario)
 
         assertEquals(voluntario, getVoluntarioBaseDados(tabelaVoluntarios, voluntario.id))
