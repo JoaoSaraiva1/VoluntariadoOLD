@@ -38,7 +38,8 @@ class TabelaInstituicoes(db: SQLiteDatabase) {
     }
 
     companion object {
-        const val NOME_TABELA = "voluntarios"
+
+        const val NOME_TABELA = "instituicao"
         const val CAMPO_NOME = "nome"
         const val CAMPO_TELEFONE = "telefone"
         const val CAMPO_MORADA = "morada"

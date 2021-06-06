@@ -40,6 +40,19 @@ class TestesBaseDados {
 
         return Voluntario.fromCursor(cursor)
     }
+    private fun getInstituicaoBaseDados(tabela: TabelaInstituicoes, id: Long): Instituicao {
+        val cursor = tabela.query(
+            TabelaInstituicoes.TODAS_COLUNAS,
+            "${BaseColumns._ID}=?",
+            arrayOf(id.toString()),
+            null, null, null
+        )
+
+        assertNotNull(cursor)
+        assert(cursor!!.moveToNext())
+
+        return Instituicao.fromCursor(cursor)
+    }
 
     @Before
     fun apagaBaseDados() {
@@ -117,6 +130,25 @@ class TestesBaseDados {
         voluntario.id = insereVoluntario(tabelaVoluntarios, voluntario)
 
         assertEquals(voluntario, getVoluntarioBaseDados(tabelaVoluntarios, voluntario.id))
+
+        db.close()
+    }
+
+    @Test
+    fun consegueInserirLivros() {
+        val db = getBdVoluntariadoOpenHelper().writableDatabase
+
+        /*
+        val tabelaInstituicoes = TabelaInstituicoes(db)
+        val tarefas = Tarefa(nome = "Cruz Vermelha", telefone = 298765431, morada = "Av. Dr. Afonso Costa ", tarefas = "Distribuir vacinas")
+        instituicao.id = insereInstituicao(TabelaInstituicoes, instituicao)
+         */
+
+        val tabelaInstituicoes = TabelaInstituicoes(db)
+        val instituicao = Instituicao(nome = "Cruz Vermelha", telefone = 298765431, morada = "Av. Dr. Afonso Costa ", tarefas="Distribuir vacinas")
+        instituicao.id = insereInstituicao(TabelaInstituicoes, instituicao)
+
+        assertEquals(instituicao, getInstituicaoBaseDados(tabelaInstituicoes, instituicao.id))
 
         db.close()
     }
