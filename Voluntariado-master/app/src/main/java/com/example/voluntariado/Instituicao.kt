@@ -5,7 +5,7 @@ import android.database.Cursor
 import android.provider.BaseColumns
 import kotlin.collections.ArrayList
 
-data class Instituicao(var id: Long = -1, var nome: String, var telefone: Long = 0, var morada: String, var tarefas: ArrayList) { //perguntar como fazer um array
+data class Instituicao(var id: Long = -1, var nome: String, var telefone: Long = 0, var morada: String, var tarefas: String) { //perguntar como fazer um array
     fun toContentValues(): ContentValues {
         val valores = ContentValues()
         valores.put(TabelaInstituicoes.CAMPO_NOME, nome)
@@ -16,7 +16,7 @@ data class Instituicao(var id: Long = -1, var nome: String, var telefone: Long =
     }
 
     companion object {
-        fun fromCursor(cursor: Cursor): Voluntario {
+        fun fromCursor(cursor: Cursor): Instituicao {
             val volId = cursor.getColumnIndex(BaseColumns._ID)
             val volNome = cursor.getColumnIndex(TabelaInstituicoes.CAMPO_NOME)
             val volTelefone = cursor.getColumnIndex(TabelaInstituicoes.CAMPO_TELEFONE)
