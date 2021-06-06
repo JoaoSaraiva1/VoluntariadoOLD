@@ -18,13 +18,13 @@ data class Voluntario(var id: Long = -1, var nome: String, var data_nascimento: 
         fun fromCursor(cursor: Cursor): Voluntario {
             val volId = cursor.getColumnIndex(BaseColumns._ID)
             val volNome = cursor.getColumnIndex(TabelaVoluntarios.CAMPO_NOME)
-            val volIdade = cursor.getColumnIndex(TabelaVoluntarios.CAMPO_DATA_NASCIMENTO)
+            val volDataNascimento = cursor.getColumnIndex(TabelaVoluntarios.CAMPO_DATA_NASCIMENTO)
             val volTelefone = cursor.getColumnIndex(TabelaVoluntarios.CAMPO_TELEFONE)
             val volGenero = cursor.getColumnIndex(TabelaVoluntarios.CAMPO_GENERO)
 
             val id = cursor.getLong(volId)
             val nome = cursor.getString(volNome)
-            val data_nascimento = cursor.getString(volIdade)
+            val data_nascimento = cursor.getString(volDataNascimento)
             val telefone = cursor.getLong(volTelefone)
             val genero = cursor.getString(volGenero)
 
