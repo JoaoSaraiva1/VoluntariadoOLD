@@ -26,6 +26,12 @@ class TestesBaseDados {
 
         return id
     }
+    private fun insereInstituicao(tabela: TabelaInstituicoes, Instituicao: instituicao): Long {
+        val id = tabela.insert(instituicao.toContentValues())
+        assertNotEquals(-1, id)
+
+        return id
+    }
 
     private fun getVoluntarioBaseDados(tabela: TabelaVoluntarios, id: Long): Voluntario {
         val cursor = tabela.query(
@@ -135,17 +141,11 @@ class TestesBaseDados {
     }
 
     @Test
-    fun consegueInserirLivros() {
+    fun consegueInserirInstituicao() {
         val db = getBdVoluntariadoOpenHelper().writableDatabase
 
-        /*
         val tabelaInstituicoes = TabelaInstituicoes(db)
-        val tarefas = Tarefa(nome = "Cruz Vermelha", telefone = 298765431, morada = "Av. Dr. Afonso Costa ", tarefas = "Distribuir vacinas")
-        instituicao.id = insereInstituicao(TabelaInstituicoes, instituicao)
-         */
-
-        val tabelaInstituicoes = TabelaInstituicoes(db)
-        val instituicao = Instituicao(nome = "Cruz Vermelha", telefone = 298765431, morada = "Av. Dr. Afonso Costa ", tarefas="Distribuir vacinas")
+        val instituicao = Instituicao(nome = "Cruz Vermelha", telefone = 298765431, morada = "Av. Dr. Afonso Costa ", tarefas= "Distribuir vacinas")
         instituicao.id = insereInstituicao(TabelaInstituicoes, instituicao)
 
         assertEquals(instituicao, getInstituicaoBaseDados(tabelaInstituicoes, instituicao.id))

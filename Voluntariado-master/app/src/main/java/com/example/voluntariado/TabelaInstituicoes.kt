@@ -10,7 +10,7 @@ class TabelaInstituicoes(db: SQLiteDatabase) {
     private val db: SQLiteDatabase = db
 
     fun cria() {
-        db.execSQL("CREATE TABLE $NOME_TABELA (${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, $CAMPO_NOME TEXT NOT NULL, $CAMPO_TELEFONE NUMBER NOT NULL, $CAMPO_MORADA TEXT NOT NULL, $CAMPO_TAREFAS)")
+        db.execSQL("CREATE TABLE $NOME_TABELA (${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, $CAMPO_NOME TEXT NOT NULL, $CAMPO_TELEFONE NUMBER NOT NULL, $CAMPO_MORADA TEXT NOT NULL, $CAMPO_ID_TAREFAS INTEGER NOT NULL, FOREIGN KEY($CAMPO_ID_TAREFAS) REFERENCES ${TabelaTarefas.NOME_TABELA})")
     }
 
     fun insert(values: ContentValues): Long {
@@ -39,13 +39,13 @@ class TabelaInstituicoes(db: SQLiteDatabase) {
 
     companion object {
 
-        const val NOME_TABELA = "instituicao"
+        const val NOME_TABELA = "instituicoes"
         const val CAMPO_NOME = "nome"
         const val CAMPO_TELEFONE = "telefone"
         const val CAMPO_MORADA = "morada"
-        const val CAMPO_TAREFAS= "tarefas"
+        const val CAMPO_ID_TAREFAS = "id_tarefas"
 
-        val TODAS_COLUNAS = arrayOf(BaseColumns._ID, CAMPO_NOME,CAMPO_TELEFONE,CAMPO_MORADA,CAMPO_TAREFAS)
+        val TODAS_COLUNAS = arrayOf(BaseColumns._ID, CAMPO_NOME,CAMPO_TELEFONE,CAMPO_MORADA,CAMPO_ID_TAREFAS)
     }
 }
 
