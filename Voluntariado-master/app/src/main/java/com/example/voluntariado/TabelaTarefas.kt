@@ -45,6 +45,6 @@ class TabelaTarefas(db: SQLiteDatabase) {
         const val CAMPO_NOME = "nome"
         const val CAMPO_ESTADO = "estado"
 
-        val TODAS_COLUNAS = arrayOf(BaseColumns._ID, CAMPO_NOME,CAMPO_ESTADO)
+        val TODAS_COLUNAS = arrayOf(BaseColumns._ID, CAMPO_NOME, CAMPO_ESTADO)
     }
 }

@@ -37,8 +37,8 @@ class TestesBaseDados {
     }
 
     @Test
-    private fun insereTarefa(tabela: TabelaTarefas, tarefas: Tarefas): Long {
-        val id = tabela.insert(tarefas.toContentValues())
+    private fun insereTarefa(tabela: TabelaTarefas, tarefa: Tarefa): Long {
+        val id = tabela.insert(tarefa.toContentValues())
         assertNotEquals(-1, id)
 
         return id
@@ -70,6 +70,21 @@ class TestesBaseDados {
 
         return Instituicao.fromCursor(cursor)
     }
+
+    private fun getTarefasBaseDados(tabela: TabelaTarefas, id: Long): Tarefa {
+        val cursor = tabela.query(
+            TabelaTarefas.TODAS_COLUNAS,
+            "${BaseColumns._ID}=?",
+            arrayOf(id.toString()),
+            null, null, null
+        )
+
+        assertNotNull(cursor)
+        assert(cursor!!.moveToNext())
+
+        return Tarefa.fromCursor(cursor)
+    }
+
 
     @Before
     fun apagaBaseDados() {
@@ -155,8 +170,8 @@ class TestesBaseDados {
     @Test
     fun consegueInserirInstituicao() {
         val db = getBdVoluntariadoOpenHelper().writableDatabase
-
         val tabelaInstituicoes = TabelaInstituicoes(db)
+
         val instituicao = Instituicao(nome = "Cruz Vermelha", telefone = 298765431, morada = "Av. Dr. Afonso Costa ", tarefas= "Distribuir vacinas")
         instituicao.id = insereInstituicao(TabelaInstituicoes, instituicao)
 
@@ -167,13 +182,71 @@ class TestesBaseDados {
      */
 
     @Test
-    fun consegueInserirCategorias() {
-        val db = getBdLivrosOpenHelper().writableDatabase
+    fun consegueInserirTarefas() {
+        val db = getBdVoluntariadoOpenHelper().writableDatabase
         val tabelaTarefas = TabelaTarefas(db)
 
-        val tarefas = Tarefas(nome = "Drama"    )
-        tarefas.id = insereTarefa(tabelaTarefas, tarefas)
+        val tarefa = Tarefa(nome = "Limpar", estado = "Acabada")
+        tarefa.id = insereTarefa(tabelaTarefas, tarefa)
+
+        assertEquals(tarefa, getTarefasBaseDados(tabelaTarefas, tarefa.id))
 
         db.close()
     }
+
+    @Test
+    fun consegueAlterarTarefas() {
+        val db = getBdVoluntariadoOpenHelper().writableDatabase
+        val tabelaTarefas = TabelaTarefas(db)
+
+        val tarefa = Tarefa(nome = "Arrumar", estado = "Por realizar")
+        tarefa.id = insereTarefa(tabelaTarefas, tarefa)
+
+        tarefa.nome = "Organizar"
+        tarefa.estado ="Realizada"
+
+        val registosAlterados = tabelaTarefas.update(
+            tarefa.toContentValues(),
+            "${BaseColumns._ID}=?",
+            arrayOf(tarefa.id.toString())
+        )
+
+        assertEquals(1, registosAlterados)
+
+        assertEquals(tarefa, getTarefasBaseDados(tabelaTarefas, tarefa.id))
+
+        db.close()
+    }
+
+    @Test
+    fun consegueEliminarTarefas() {
+        val db = getBdVoluntariadoOpenHelper().writableDatabase
+        val tabelaTarefas = TabelaTarefas(db)
+
+        val tarefa = Tarefa(nome = "teste", estado = "teste")
+        tarefa.id = insereTarefa(tabelaTarefas, tarefa)
+
+        val registosEliminados = tabelaTarefas.delete(
+            "${BaseColumns._ID}=?",
+            arrayOf(tarefa.id.toString())
+        )
+
+        assertEquals(1, registosEliminados)
+
+        db.close()
+    }
+
+    @Test
+    fun consegueLerTarefas() {
+        val db = getBdVoluntariadoOpenHelper().writableDatabase
+        val tabelaTarefas = TabelaTarefas(db)
+
+        val tarefa = Tarefa(nome = "Limpar", estado = "Acabada")
+        tarefa.id = insereTarefa(tabelaTarefas, tarefa)
+
+        assertEquals(tarefa, getTarefasBaseDados(tabelaTarefas, tarefa.id))
+
+        db.close()
+    }
+
 }
