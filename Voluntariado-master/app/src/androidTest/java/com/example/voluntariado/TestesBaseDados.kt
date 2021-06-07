@@ -20,14 +20,25 @@ class TestesBaseDados {
     private fun getAppContext() = InstrumentationRegistry.getInstrumentation().targetContext
     private fun getBdVoluntariadoOpenHelper() = BdVoluntariadoOpenHelper(getAppContext())
 
+    @Test
     private fun insereVoluntario(tabela: TabelaVoluntarios, voluntario: Voluntario): Long {
         val id = tabela.insert(voluntario.toContentValues())
         assertNotEquals(-1, id)
 
         return id
     }
-    private fun insereInstituicao(tabela: TabelaInstituicoes, Instituicao: instituicao): Long {
+
+    @Test
+    private fun insereInstituicao(tabela: TabelaInstituicoes, instituicao: Instituicao): Long {
         val id = tabela.insert(instituicao.toContentValues())
+        assertNotEquals(-1, id)
+
+        return id
+    }
+
+    @Test
+    private fun insereTarefa(tabela: TabelaTarefas, tarefas: Tarefas): Long {
+        val id = tabela.insert(tarefas.toContentValues())
         assertNotEquals(-1, id)
 
         return id
@@ -140,6 +151,7 @@ class TestesBaseDados {
         db.close()
     }
 
+    /*
     @Test
     fun consegueInserirInstituicao() {
         val db = getBdVoluntariadoOpenHelper().writableDatabase
@@ -149,6 +161,18 @@ class TestesBaseDados {
         instituicao.id = insereInstituicao(TabelaInstituicoes, instituicao)
 
         assertEquals(instituicao, getInstituicaoBaseDados(tabelaInstituicoes, instituicao.id))
+
+        db.close()
+    }
+     */
+
+    @Test
+    fun consegueInserirCategorias() {
+        val db = getBdLivrosOpenHelper().writableDatabase
+        val tabelaTarefas = TabelaTarefas(db)
+
+        val tarefas = Tarefas(nome = "Drama"    )
+        tarefas.id = insereTarefa(tabelaTarefas, tarefas)
 
         db.close()
     }
