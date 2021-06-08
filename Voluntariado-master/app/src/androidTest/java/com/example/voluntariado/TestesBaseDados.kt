@@ -57,6 +57,7 @@ class TestesBaseDados {
 
         return Voluntario.fromCursor(cursor)
     }
+
     private fun getInstituicaoBaseDados(tabela: TabelaInstituicoes, id: Long): Instituicao {
         val cursor = tabela.query(
             TabelaInstituicoes.TODAS_COLUNAS,
@@ -166,20 +167,97 @@ class TestesBaseDados {
         db.close()
     }
 
-    /*
+
     @Test
     fun consegueInserirInstituicao() {
         val db = getBdVoluntariadoOpenHelper().writableDatabase
-        val tabelaInstituicoes = TabelaInstituicoes(db)
 
-        val instituicao = Instituicao(nome = "Cruz Vermelha", telefone = 298765431, morada = "Av. Dr. Afonso Costa ", tarefas= "Distribuir vacinas")
-        instituicao.id = insereInstituicao(TabelaInstituicoes, instituicao)
+        val tabelaTarefas = TabelaTarefas(db)
+        val tarefa = Tarefa(nome = "limpeza", estado = "realizado")
+        tarefa.id = insereTarefa(tabelaTarefas, tarefa)
+
+        val tabelaInstituicoes = TabelaInstituicoes(db)
+        val instituicao = Instituicao(nome = "Cruz Vermelha", telefone = 298765431, morada = "Av. Dr. Afonso Costa ", idTarefa = tarefa.id)
+        instituicao.id = insereInstituicao(tabelaInstituicoes, instituicao)
 
         assertEquals(instituicao, getInstituicaoBaseDados(tabelaInstituicoes, instituicao.id))
 
         db.close()
     }
-     */
+
+    @Test
+    fun consegueAlterarInstituicao() {
+        val db = getBdVoluntariadoOpenHelper().writableDatabase
+
+        val tabelaTarefas = TabelaTarefas(db)
+
+        val tarefaVacinar = Tarefa(nome = "Vacinar", estado ="por realizar")
+        tarefaVacinar.id = insereTarefa(tabelaTarefas, tarefaVacinar)
+
+        val tarefaHorarios = Tarefa(nome = "Criacao de horarios de vacinacao", estado = "realizada")
+        tarefaHorarios.id = insereTarefa(tabelaTarefas, tarefaVacinar)
+
+        val tabelaInstituicoes = TabelaInstituicoes(db)
+
+        val instituicao = Instituicao(nome = "?", telefone = 0, morada = "", idTarefa = tarefaVacinar.id)
+        instituicao.id = insereInstituicao(tabelaInstituicoes, instituicao)
+
+        instituicao.nome = "ADIC"
+        instituicao.telefone = 230978465
+        instituicao.morada = "Rua direita"
+        instituicao.idTarefa = tarefaVacinar.id
+
+        val registosAlterados = tabelaInstituicoes.update(
+            instituicao.toContentValues(),
+            "${BaseColumns._ID}=?",
+            arrayOf(instituicao.id.toString())
+        )
+
+        assertEquals(1, registosAlterados)
+
+        assertEquals(instituicao, getInstituicaoBaseDados(tabelaInstituicoes, instituicao.id))
+
+        db.close()
+    }
+
+    @Test
+    fun consegueEliminarInstituicao() {
+        val db = getBdVoluntariadoOpenHelper().writableDatabase
+
+        val tabelaTarefas = TabelaTarefas(db)
+        val tarefa = Tarefa(nome = "Notificar pessoas a vacinar", estado = "Em curso")
+        tarefa.id = insereTarefa(tabelaTarefas, tarefa)
+
+        val tabelaInstituicao = TabelaInstituicoes(db)
+        val instituicao = Instituicao(nome = "?", telefone = 0, morada ="?", idTarefa = tarefa.id)
+        instituicao.id = insereInstituicao(tabelaInstituicao, instituicao)
+
+        val registosEliminados = tabelaInstituicao.delete(
+            "${BaseColumns._ID}=?",
+            arrayOf(instituicao.id.toString())
+        )
+
+        assertEquals(1, registosEliminados)
+
+        db.close()
+    }
+
+    @Test
+    fun consegueLerInstituicao() {
+        val db = getBdVoluntariadoOpenHelper().writableDatabase
+
+        val tabelaTarefas = TabelaTarefas(db)
+        val tarefa = Tarefa(nome = "Culinária", estado = "")
+        tarefa.id = insereTarefa(tabelaTarefas, tarefa)
+
+        val tabelaInstituicoes = TabelaInstituicoes(db)
+        val instituicao = Instituicao(nome = "IVL", telefone = 987654321,morada= "Rua esquerda", idTarefa = tarefa.id)
+        instituicao.id = insereInstituicao(tabelaInstituicoes, instituicao)
+
+        assertEquals(instituicao, getInstituicaoBaseDados(tabelaInstituicoes, instituicao.id))
+
+        db.close()
+    }
 
     @Test
     fun consegueInserirTarefas() {
